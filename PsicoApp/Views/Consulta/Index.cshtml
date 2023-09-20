@@ -1,0 +1,178 @@
+﻿@model List<PsicoApp.Data.Paciente>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">DNI</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Telefono</th>
+            <th scope="col">Email</th>
+            <th scope="col">Estatus</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Dni</td>
+                <td>@item.Nombre</td>
+                <td>@item.Telefono</td>
+                <td>@item.Email</td>
+                @if (item.Estatus == "pendiente")
+                {
+                    <td><span class="badge text-bg-warning text-black">@item.Estatus</span></td>
+
+                }
+
+                <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar</button></td>
+                <td><button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#EditModal">Editar</button></td>
+                <td>
+                    <button class="btn btn-danger" asp-controller="Consultas" asp-action="DeleteConsultabyDNI">Eliminar</button>
+                </td>
+            </tr>
+        }
+
+
+
+    </tbody>
+</table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Cita</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Ingrese su DNI</label>
+                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="987654321">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Ingrese su Nombre</label>
+                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Ingrese su Telefono sin guiones</label>
+                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="1234356789">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Direccion</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Ingrese su Email</label>
+                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                </div>
+
+
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Cita</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1DNI" class="form-label">Ingrese su DNI</label>
+                    <input type="email" class="form-control" name="dni" id="exampleFormControlInput1DNI" placeholder="987654321">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1Nombre" class="form-label">Ingrese su Nombre</label>
+                    <input type="email" class="form-control" name="nombre" id="exampleFormControlInput1Nombre" placeholder="name@example.com">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1Telefono" class="form-label">Ingrese su Telefono sin guiones</label>
+                    <input type="email" class="form-control" name="telefono" id="exampleFormControlInput1Telefono" placeholder="1234356789">
+                </div>
+
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Direccion</label>
+                    <textarea class="form-control" name="direccion" id="exampleFormControlTextarea1" rows="1"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1Email" class="form-label">Ingrese su Email</label>
+                    <input type="email" class="form-control"name="email" id="exampleFormControlInput1Email" placeholder="name@example.com">
+                </div>
+
+
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="btnSaveChanges" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('btnSaveChanges').addEventListener('click', function () {
+        // Obtén los valores de los campos del modal
+        var dni = document.getElementById('exampleFormControlInput1DNI').value;
+        var nombre = document.getElementById('exampleFormControlInput1Nombre').value;
+        var telefono = document.getElementById('exampleFormControlInput1Telefono').value;
+        var direccion = document.getElementById('exampleFormControlTextarea1').value;
+        var email = document.getElementById('exampleFormControlInput1Email').value;
+        var estatus="pendiente"
+        // Crea un objeto que contenga los datos
+        var data = {
+            nombre: nombre,
+            telefono: telefono,
+            dni: dni,
+            departamento: '', // No se está utilizando en la acción del controlador
+            email: email,
+            tipo: '', // No se está utilizando en la acción del controlador
+            estatus: estatus
+        };
+
+
+        // Realiza la solicitud Fetch al controlador en C# para guardar los datos
+        fetch('/Consulta/AddConsulta', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                Swall.fire(
+                    'Se ha ingresado la cita correctamente',
+                    'Success'
+                )
+            })
+            .catch(error => {
+                // Manejar errores si la solicitud falla
+                console.error('Error:', error);
+            });
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
