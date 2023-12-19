@@ -35,7 +35,10 @@
                 <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar</button></td>
                 <td><button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#EditModal">Editar</button></td>
                 <td>
-                    <button class="btn btn-danger" asp-controller="Consultas" asp-action="DeleteConsultabyDNI">Eliminar</button>
+                    <form asp-controller="Consultas" asp-action="DeleteConsultabyDNI" method="post">
+                        <button class="btn btn-danger" type="submit">Eliminar</button>
+
+                    </form>
                 </td>
             </tr>
         }

@@ -44,8 +44,6 @@ namespace PsicoApp.Controllers
             {
 
                 con.Open();
-                //var queryusuario = $"Insert into PACIENTES(Nombre,Telefono,DNI,Departamento,Email,Tipo,Estatus,Fecha) " +
-                //    $"values('{nombre}','{telefono}','{dni}','{email}','{tipo}','{estatus}','GETDATE()')";
                 var queryusuario = $"Insert into PACIENTES(Nombre,Telefono,DNI,Email,Tipo,Estatus,Fecha) " +
                 $"values('{paciente.Nombre}','{paciente.Telefono}','{paciente.Dni}','{paciente.Email}','{paciente.Tipo}','{paciente.Estatus}', GETDATE())";
 
@@ -83,17 +81,17 @@ namespace PsicoApp.Controllers
         }
   
         [HttpPost]
-        public IActionResult DeleteConsultabyDNI(string dni, string estatus)
+        public IActionResult DeleteConsultabyDNI(string dni)
         {
             string conexion = _configuration.GetConnectionString("CadenaSQL").ToString();
             using (var con = new SqlConnection(conexion))
             {
-
                 con.Open();
-                var deleteQuery = $"Update PACIENTES set Estatus='{estatus}' where Dni='{dni}' ";
-                var consultaEliminada = con.Execute(deleteQuery);
-                return View(consultaEliminada);
+                var deleteQuery = $"DELETE FROM PACIENTES WHERE Dni = '{dni}'";
+                var registrosEliminados = con.Execute(deleteQuery);
+                return View(registrosEliminados);
             }
+
 
         }
     }
